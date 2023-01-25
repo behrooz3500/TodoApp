@@ -1,0 +1,156 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .center {
+            margin-left: 160px;
+            border: 2px solid;
+            display: flex;
+            justify-content: center;
+            padding: inherit;
+            width: auto;
+            background-color: powderblue;
+            font-size: small;
+            font-weight: bold;
+
+        }
+
+        .my_button {
+            font-size: small;
+            font-weight: bold;
+            background: antiquewhite;
+        }
+
+        {
+            box-sizing: border-box
+        ;
+
+        }
+        th, td {
+            padding-right: 50px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .title {
+            color: #062c33;
+            font-size: 14px;
+        }
+
+        button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            color: black;
+            background-color: powderblue;
+            text-align: center;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        a {
+            text-decoration: none;
+            font-size: 10px;
+            color: black;
+        }
+
+        button:hover, a:hover {
+            opacity: 0.5;
+        }
+
+        /* The sidebar menu */
+        .sidenav {
+            height: 100%; /* Full-height: remove this if you want "auto" height */
+            width: 160px; /* Set the width of the sidebar */
+            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1; /* Stay on top */
+            top: 0; /* Stay at the top */
+            left: 0;
+            background-color: #ffffff; /* Black */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 20px;
+        }
+
+        /* The navigation menu links */
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+        }
+
+        /* When you mouse over the navigation links, change their color */
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+
+        /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags %}
+            <script>window.onload = function () {
+                alert("{{ message }}")
+            }</script> {% endif %}
+    {% endfor %}
+
+{% endif %}
+{% block contents %}
+
+{% endblock %}
+
+<script>
+    function myFunction(task_title, task_id) {
+        let text;
+        let id = task_id
+        window.alert(id)
+        let new_title = prompt("Enter your task:", task_title);
+        if (new_title == null || new_title == "") {
+            text = "User cancelled the prompt.";
+        } else {
+            $.post("{% url 'todo:update_task' 1 %}".replace(/1/, id.toString()), {'title': new_title});
+            {#window.location.assign("{% url 'todo:update_task' 1 %}".replace(/1/, id.toString()));#}
+            text = "Hello " + new_title + "! How are you today?";
+        }
+    }
+</script>
+<script src="{% static 'assets/js/bootstrap.js' %}"></script>
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.js' %}"></script>
+<!-- You can alternatively load the minified version -->
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block contents %}
+    <div class="sidenav">
+  <div class="card">
+        {% if profile.image %}
+            <img src="{{ profile.image.url }}" alt="profile_image" style="width:100%">
+        {% else %}
+            <img src="{% static '1.jpg' %}" alt="profile_image" style="width:100%">
+        {% endif %}
+        <h6>{{ user }}</h6>
+        {% if profile.username %}
+            <p class="title">Username:<br> {{ profile.username }} </p>
+        {% endif %}
+        {% if profile.first_name %}
+            <p class="title">Name:<br>{{ profile.first_name }} {{ profile.last_name }} </p>
+        {% endif %}
+        {% if profile.birth_date %}
+            <p class="title">birthday:<Br>{{ profile.birth_date }} </p>
+        {% endif %}
+        <p>
+            <a href="{% url 'accounts:profile' %}"><button>Edit Profile</button></a>
+            <a href="{% url 'accounts:logout' %}">
+                <button>LogOut</button>
+            </a>
+        </p>
+    </div>
+</div>
+    <div class="center">
+        <form method="POST" action="{% url 'todo:create_task' %}">
+            {% csrf_token %}
+            <label for="task">Enter your task:</label>
+            <input type="text" id="title" name="title">
+            <input class="my_button" type="submit" value="Add Task">
+            <input class="my_button" type="reset" value="Clear">
+        </form>
+    </div>
+    <hr/>
+    <div class="center">
+        <table>
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Created date</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in page_obj %}
+                <tr>
+                    <td id="{{ task.id }}">
+                        {{ task.title }}
+                    </td>
+                    {% if task.completed == True %}
+                        <td>Completed</td>
+                    {% else %}
+                        <td>Pending...</td>
+                    {% endif %}
+                    <td>{{ task.created_date | naturaltime }}</td>
+                    <td>
+                        <a href="{% url 'todo:update_task' task.id %}">
+                            <input class="my_button" type="submit" value="&#9998 Edit">
+                        </a>
+                        <a href="{% url 'todo:toggle' task.id %}">
+                            <input class="my_button" type="submit" value="&#8645 Change State">
+                        </a>
+                        <a href="{% url 'todo:delete_task' task.id %}">
+                            <input class="my_button" type="submit" value="&#10006 Delete">
+                        </a>
+
+
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+    <div class="pagination" style="margin-left: 210px">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+    </div>
+
+
+{% endblock %}

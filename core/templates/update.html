@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents %}
+
+
+<form class="center" method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h4 class="modal-title">Edit your task:</h4>
+     <div class="modal-body">
+      {{ form }}
+    <a href="{% url 'todo:main_todo' %}">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </a>
+    <button type="submit" class="btn btn-primary" formnovalidate="formnovalidate">Update</button>
+  </div>
+  </div>
+
+
+
+</form>
+{% endblock %}
