@@ -17,7 +17,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# Quick-start development settings - unsuhttps://video-resolver.maktabkhooneh.org/videos/hq0932281044514461.mp4?expire=1675610807&token=45ea8a26684cb94579e4bc669fe3f90d&md5=ReqKJmhMuUV55Lxmn-P5DQ==&name=Advanced-Django_6_1.mp4itable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'rest_framework',
+    'django_filters',
     
     'accounts.apps.AccountsConfig',
     'todo.apps.TodoConfig',
