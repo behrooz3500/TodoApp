@@ -11,13 +11,15 @@ class CustomUserAdmin(UserAdmin):
     list_display = [
         'email',
         'is_superuser',
-        'is_active'
+        'is_active',
+        'is_verified',
     ]
 
     list_filter = [
         'email',
         'is_superuser',
-        'is_active'
+        'is_active',
+        'is_verified',
     ]
 
     search_fields = ['email']
@@ -37,7 +39,7 @@ class CustomUserAdmin(UserAdmin):
         }),
         ('Permissions', {
             'fields': (
-                'is_superuser', 'is_staff', 'is_active',
+                'is_superuser', 'is_staff', 'is_active', 'is_verified',
             ),
         }),
         ('logs', {
@@ -57,7 +59,8 @@ class CustomUserAdmin(UserAdmin):
                 'password2',
                 'is_superuser',
                 'is_staff',
-                'is_active'
+                'is_active',
+                'is_verified',
             )}
          ),
     )
