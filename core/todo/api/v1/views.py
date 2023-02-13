@@ -1,6 +1,6 @@
 # rest
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
@@ -15,7 +15,7 @@ from .filters import TaskFilter
 
 
 class TaskViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly ]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = TodoSerializer
     queryset = Todo.objects.all()
 
@@ -23,7 +23,11 @@ class TaskViewSet(viewsets.ModelViewSet):
     ordering_filter = filters.OrderingFilter
     filter_backends = [DjangoFilterBackend, search_filter, ordering_filter]
     filterset_class = TaskFilter
-    filterset_fields = ['category', 'completed', 'user']
+    filterset_fields = {
+        'category': ["in", 'exact'],
+        'completed': ['exact'],
+        'user': ['exact']
+    }
     search_fields = ['title']
     ordering_fields = ['created_date', 'updated_date']
     pagination_class = TaskListPagination
@@ -36,8 +40,6 @@ class TaskViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = TaskCategory.objects.all()
-
-
