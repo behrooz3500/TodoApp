@@ -1,5 +1,5 @@
 from django.contrib import admin
-from todo.models import Todo
+from todo.models import Todo, TaskCategory
 
 
 # Register your models here.
@@ -17,4 +17,12 @@ class TodoAdmin(admin.ModelAdmin):
     list_filter = ('user', 'completed',)
     search_fields = ('user', 'title',)
     ordering = ('created_date',)
+
+
+@admin.register(TaskCategory)
+class TaskCategoryAdmin(admin.ModelAdmin):
+    model = TaskCategory
+    list_display = (
+        'name',
+    )
 

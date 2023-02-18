@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from todo.views import (
     TodoMainView,
     # CreateTask,
@@ -22,6 +22,6 @@ urlpatterns = [
     path('delete/<int:pk>/', TaskDeletionView.as_view(), name='delete_task'),
     path('update/<int:pk>', TaskUpdateView.as_view(), name='update_task'),
     path('change/<int:pk>', TaskStatusToggle.as_view(), name='toggle'),
-
+    path('api/v1/', include('todo.api.v1.urls')),
 ]
 

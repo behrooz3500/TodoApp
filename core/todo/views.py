@@ -1,5 +1,7 @@
+# dj
 from django.shortcuts import render, redirect
 from django.views import View
+from django.http import HttpResponse
 from django.contrib import messages
 from django.views.generic import (
     ListView,
@@ -9,7 +11,10 @@ from django.views.generic import (
 )
 # from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from todo.models import Todo, Profile
+
+
+# internal
+from todo.models import Todo, Profile, TaskCategory
 from todo.forms import CreateTaskForm, UpdateTaskForm
 from django.core.paginator import Paginator
 
@@ -18,13 +23,15 @@ from django.core.paginator import Paginator
 class BaseView(LoginRequiredMixin, View):
     """Base class for altering tasks"""
     tasks = Todo.objects.all()
+    categories = TaskCategory.objects.all()
 
 
 class TodoMainView(BaseView):
     """Todo app main view"""
+    PAGE_NUMBER = 8
 
     def get(self, request):
-        paginator = Paginator(self.tasks.filter(user__user__email=self.request.user), 5)
+        paginator = Paginator(self.tasks.filter(user__user__email=self.request.user), self.PAGE_NUMBER)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         profile = Profile.objects.get(user=request.user)
@@ -33,7 +40,8 @@ class TodoMainView(BaseView):
             'tasks': self.tasks.filter(user__user__email=self.request.user),
             'page_obj': page_obj,
             'user': user,
-            'profile': profile
+            'profile': profile,
+            'categories': self.categories
         }
         return render(request, template_name='index.html', context=context)
 
@@ -84,6 +92,10 @@ class TaskStatusToggle(BaseView):
         else:
             self.tasks.filter(pk=pk).update(completed=True)
         return redirect('/')
+
+
+
+
 
 
 '''
