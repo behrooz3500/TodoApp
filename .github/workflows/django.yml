@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI test
 
 on:
   push:
@@ -16,4 +16,4 @@ jobs:
     - name: Setup docker-compose
       run: docker-compose up -d
     - name: Run Tests
-      run: docker exec backend sh -c "python manage.py test"
+      run: docker-compose exec backend sh -c "python manage.py test"
