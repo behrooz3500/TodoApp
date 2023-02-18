@@ -5,7 +5,11 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import (
+    GenericAPIView,
+    ListCreateAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 
 # internal
 from .serializers import TodoSerializer, CategorySerializer
@@ -50,8 +54,7 @@ class ListAllCategoriesOrCreateNew(BaseCategoryAPIView, ListCreateAPIView):
     pass
 
 
-class SingleCategoryDetailAPIView(BaseCategoryAPIView,
-                                  RetrieveUpdateDestroyAPIView):
+class SingleCategoryDetailAPIView(BaseCategoryAPIView, RetrieveUpdateDestroyAPIView):
     pass
 
 

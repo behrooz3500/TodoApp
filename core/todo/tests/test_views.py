@@ -9,7 +9,6 @@ from rest_framework import status
 
 
 class TestViewBase:
-
     def test_url_authorized_user_valid_data_successful_response(self):
         authorized_client = self.client
         authorized_client.force_login(self.user_object)
@@ -17,7 +16,8 @@ class TestViewBase:
         # self.client.force_login(self.user_object)
 
         self.assertEqual(
-            authorized_client.get(self.URL).status_code, status.HTTP_200_OK)
+            authorized_client.get(self.URL).status_code, status.HTTP_200_OK
+        )
 
     def test_url_authorized_user_invalid_data_successful_response(self):
         pass

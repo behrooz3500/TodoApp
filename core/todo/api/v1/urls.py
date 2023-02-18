@@ -10,14 +10,26 @@ from todo.api.v1 import views
 app_name = "api-v1"
 
 urlpatterns = [
-    path('tasks/', views.ListAllTasksOrCreateNewTaskAPIView.as_view(), 
-         name='list-create-tasks'),
-    path('tasks/<int:pk>', views.SingleTaskDetailAPIView.as_view(),
-         name='single-task-detail'),
-    path('category/', views.ListAllCategoriesOrCreateNew.as_view(),
-         name='list-create-category'),
-    path('category/<int:pk>', views.SingleCategoryDetailAPIView.as_view(),
-         name='single-category-detail'),
+    path(
+        "tasks/",
+        views.ListAllTasksOrCreateNewTaskAPIView.as_view(),
+        name="list-create-tasks",
+    ),
+    path(
+        "tasks/<int:pk>",
+        views.SingleTaskDetailAPIView.as_view(),
+        name="single-task-detail",
+    ),
+    path(
+        "category/",
+        views.ListAllCategoriesOrCreateNew.as_view(),
+        name="list-create-category",
+    ),
+    path(
+        "category/<int:pk>",
+        views.SingleCategoryDetailAPIView.as_view(),
+        name="single-category-detail",
+    ),
 ]
 
 """router = DefaultRouter()

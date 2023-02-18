@@ -9,14 +9,12 @@ class BaseTest(TestCase):
     URL = ""
     FORM = None
     MODEL = None
-    METHOD = [] 
+    METHOD = []
 
     def setUp(self):
         self.title = "test_title"
         self.user_object = User.objects.create_user(
-            email="test@test.com",
-            password="testpasswordA@1",
-            is_verified=True
+            email="test@test.com", password="testpasswordA@1", is_verified=True
         )
 
         self.profile_object = Profile.objects.create(

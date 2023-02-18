@@ -8,8 +8,8 @@ from accounts.models import Profile
 
 class CategorySerializer(serializers.ModelSerializer):
     """Serializer for TaskCategory model"""
-    absolute_api_url = serializers.SerializerMethodField(
-        method_name="get_absolute_url")
+
+    absolute_api_url = serializers.SerializerMethodField(method_name="get_absolute_url")
 
     class Meta:
         model = TaskCategory
@@ -43,8 +43,7 @@ class TodoSerializer(serializers.ModelSerializer):
     relative_api_url = serializers.URLField(
         source="get_relative_api_url", read_only=True
     )
-    absolute_api_url = serializers.SerializerMethodField(
-        method_name="get_absolute_url")
+    absolute_api_url = serializers.SerializerMethodField(method_name="get_absolute_url")
 
     # Different ways to customize a fields shown value
     # category = serializers.SlugRelatedField(many=False, slug_field='name', queryset=TaskCategory.objects.all())

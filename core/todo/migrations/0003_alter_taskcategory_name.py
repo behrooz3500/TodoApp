@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todo', '0002_auto_20230209_1632'),
+        ("todo", "0002_auto_20230209_1632"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='taskcategory',
-            name='name',
+            model_name="taskcategory",
+            name="name",
             field=models.CharField(max_length=255, unique=True),
         ),
     ]

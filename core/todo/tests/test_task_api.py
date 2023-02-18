@@ -11,7 +11,6 @@ from ..models import Todo
 
 
 class BaseModelAPI(BaseTest):
-    
     def setUp(self):
         super().setUp()
         self.client = APIClient()
@@ -20,12 +19,12 @@ class BaseModelAPI(BaseTest):
             user=self.profile_object,
             title="test-task",
             category=self.category_object,
-            completed=False
+            completed=False,
         )
         self.put_url = reverse(self.PUT_URL, kwargs={"pk": self.task.pk})
 
-class BaseModelAPITest:
 
+class BaseModelAPITest:
     def test_get_model_response_200_authorized_user(self):
         self.client.force_login(self.user_object)
         response = self.client.get(self.url)
@@ -73,14 +72,11 @@ class TestTaskAPI(BaseModelAPITest, BaseModelAPI):
         return {
             "title": "test-title",
             "category": self.category_object.pk,
-            "completed": False
+            "completed": False,
         }
 
     def get_invalid_data(self):
-        return {
-            "category": self.category_object.pk,
-            "completed": False
-        }
+        return {"category": self.category_object.pk, "completed": False}
 
 
 class TestCategoryAPI(BaseModelAPITest, BaseModelAPI):

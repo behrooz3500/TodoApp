@@ -54,5 +54,4 @@ urlpatterns = [
         name="resend-token",
     ),
     # path('schema/', SpectacularAPIView.as_view(), name='schema'),
-
 ]

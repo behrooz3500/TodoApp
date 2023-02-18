@@ -40,7 +40,9 @@ class TodoMainView(BaseView):
         page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
         # profile = Profile.objects.get(user__email=self.request.user)
-        profile = Profile.objects.filter(user__email=self.request.user).order_by('id')[0]
+        profile = Profile.objects.filter(user__email=self.request.user).order_by("id")[
+            0
+        ]
         user = request.user
         context = {
             "tasks": self.tasks.filter(user__user__email=self.request.user),
