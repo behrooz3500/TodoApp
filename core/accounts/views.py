@@ -25,10 +25,10 @@ class BaseRegisterView(View, ABC):
     def get(self, request):
         if not request.user.is_authenticated:
             form = self.form_class()
-            context = {'form': form}
+            context = {"form": form}
             return render(request, self.template_name, context=context)
         else:
-            return redirect('/')
+            return redirect("/")
 
     @abstractmethod
     def post(self, request):
@@ -38,7 +38,7 @@ class BaseRegisterView(View, ABC):
 class SignupView(BaseRegisterView):
     """View for signing up new users"""
 
-    view_template_name = 'accounts/signup.html'
+    view_template_name = "accounts/signup.html"
     view_form_class = SignUpForm
 
     def post(self, request):
@@ -46,18 +46,18 @@ class SignupView(BaseRegisterView):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, "Signed up successfully!")
-            return redirect('/accounts/login/')
+            return redirect("/accounts/login/")
         error = form.errors.as_data()
         for field in error:
             lists = [list(error[field][0])]
         messages.add_message(request, messages.ERROR, lists)
-        return redirect('/accounts/signup')
+        return redirect("/accounts/signup")
 
 
 class LoginView(BaseRegisterView):
     """View for user login using django's AuthenticationForm"""
 
-    view_template_name = 'accounts/login.html'
+    view_template_name = "accounts/login.html"
     view_form_class = AuthenticationForm
 
     def post(self, request):
@@ -65,18 +65,20 @@ class LoginView(BaseRegisterView):
         if form.is_valid():
             user = authenticate(
                 request,
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password'],
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password"],
             )
             if user is not None:
                 login(request, user)
-                messages.add_message(request, messages.SUCCESS, f"Logged in as {request.user.email}")
-                return redirect('/')
+                messages.add_message(
+                    request, messages.SUCCESS, f"Logged in as {request.user.email}"
+                )
+                return redirect("/")
         error = form.errors.as_data()
         for field in error:
             lists = [list(error[field][0])]
         messages.add_message(request, messages.ERROR, lists)
-        return render(request, self.template_name, context={'form': form})
+        return render(request, self.template_name, context={"form": form})
 
 
 class ProfileView(LoginRequiredMixin, View):
@@ -85,15 +87,15 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         profile = Profile.objects.get(user=request.user)
         profile_content = {
-            'username': profile.username,
-            'first_name': profile.first_name,
-            'last_name': profile.last_name,
-            'birth_date': profile.birth_date,
-            'image': profile.image,
+            "username": profile.username,
+            "first_name": profile.first_name,
+            "last_name": profile.last_name,
+            "birth_date": profile.birth_date,
+            "image": profile.image,
         }
         form = ProfileEditForm(initial=profile_content)
-        context = {'form': form}
-        return render(request, template_name='profile.html', context=context)
+        context = {"form": form}
+        return render(request, template_name="profile.html", context=context)
 
     def post(self, request):
         old_profile = Profile.objects.get(user=request.user)
@@ -101,9 +103,9 @@ class ProfileView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, "Profile updated.")
-            return redirect('/')
-        messages.add_message(request, messages.ERROR, 'Invalid inputs!')
-        return redirect('/accounts/profile')
+            return redirect("/")
+        messages.add_message(request, messages.ERROR, "Invalid inputs!")
+        return redirect("/accounts/profile")
 
 
 @login_required()
@@ -112,7 +114,5 @@ def logout_view(request):
 
     if request.user.is_authenticated:
         logout(request)
-        messages.add_message(request, messages.SUCCESS, 'Logged Out!')
-        return redirect('/')
-
-
+        messages.add_message(request, messages.SUCCESS, "Logged Out!")
+        return redirect("/")

@@ -4,8 +4,9 @@ from accounts.models import Profile
 
 
 class TaskCategory(models.Model):
-    """ Task category model"""
-    name = models.CharField(max_length=255)
+    """Task category model"""
+
+    name = models.CharField(max_length=255, unique=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -18,7 +19,9 @@ class Todo(models.Model):
 
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, null=False, blank=False)
-    category = models.ForeignKey(TaskCategory, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(
+        TaskCategory, null=True, blank=True, on_delete=models.SET_NULL
+    )
     completed = models.BooleanField(default=False)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -33,8 +36,4 @@ class Todo(models.Model):
             return True
 
     def get_relative_api_url(self):
-        return reverse("todo:api-v1:task-detail", kwargs={"pk": self.pk})
-
-
-
-
+        return reverse("todo:api-v1:single-task-detail", kwargs={"pk": self.pk})

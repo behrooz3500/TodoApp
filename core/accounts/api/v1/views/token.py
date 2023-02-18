@@ -24,24 +24,23 @@ User = get_user_model()
 
 
 class TokenLoginAPIView(ObtainAuthToken):
-    """ Custom class for logging based on a generated token """
+    """Custom class for logging based on a generated token"""
+
     serializer_class = TokenSerializer
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
+        return Response({"token": token.key, "user_id": user.pk, "email": user.email})
 
 
 class TokenLogoutAPIView(APIView):
-    """ Logging out and discarding current token """
+    """Logging out and discarding current token"""
+
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -50,8 +49,6 @@ class TokenLogoutAPIView(APIView):
 
 
 class CustomTokenObtainPairView(TokenObtainPairView):
-    """ Custom class for jwt token creation """
+    """Custom class for jwt token creation"""
+
     serializer_class = CustomTokenObtainPairSerializer
-
-
-

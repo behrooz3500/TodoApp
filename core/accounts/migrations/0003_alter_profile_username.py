@@ -6,15 +6,21 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('accounts', '0002_alter_profile_birth_date'),
+        ("accounts", "0002_alter_profile_birth_date"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='username',
-            field=models.CharField(default=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL), max_length=255, unique=True),
+            model_name="profile",
+            name="username",
+            field=models.CharField(
+                default=models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to=settings.AUTH_USER_MODEL,
+                ),
+                max_length=255,
+                unique=True,
+            ),
         ),
     ]

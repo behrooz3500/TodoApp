@@ -9,6 +9,7 @@ from django.views.generic import (
     # UpdateView,
     # DeleteView,
 )
+
 # from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -22,28 +23,33 @@ from django.core.paginator import Paginator
 # Create your views here.
 class BaseView(LoginRequiredMixin, View):
     """Base class for altering tasks"""
+
     tasks = Todo.objects.all()
     categories = TaskCategory.objects.all()
 
 
 class TodoMainView(BaseView):
     """Todo app main view"""
+
     PAGE_NUMBER = 8
 
     def get(self, request):
-        paginator = Paginator(self.tasks.filter(user__user__email=self.request.user), self.PAGE_NUMBER)
-        page_number = request.GET.get('page')
+        paginator = Paginator(
+            self.tasks.filter(user__user__email=self.request.user), self.PAGE_NUMBER
+        )
+        page_number = request.GET.get("page")
         page_obj = paginator.get_page(page_number)
-        profile = Profile.objects.get(user=request.user)
+        # profile = Profile.objects.get(user__email=self.request.user)
+        profile = Profile.objects.filter(user__email=self.request.user).order_by('id')[0]
         user = request.user
         context = {
-            'tasks': self.tasks.filter(user__user__email=self.request.user),
-            'page_obj': page_obj,
-            'user': user,
-            'profile': profile,
-            'categories': self.categories
+            "tasks": self.tasks.filter(user__user__email=self.request.user),
+            "page_obj": page_obj,
+            "user": user,
+            "profile": profile,
+            "categories": self.categories,
         }
-        return render(request, template_name='index.html', context=context)
+        return render(request, template_name="index.html", context=context)
 
 
 class TaskCreateView(BaseView):
@@ -55,7 +61,7 @@ class TaskCreateView(BaseView):
             new_task = form.save(commit=False)
             new_task.user = Profile.objects.filter(user__email=self.request.user)[0]
             new_task.save()
-        return redirect('/')
+        return redirect("/")
 
 
 class TaskDeletionView(BaseView):
@@ -63,24 +69,24 @@ class TaskDeletionView(BaseView):
 
     def get(self, request, pk):
         Todo.objects.filter(id=pk).delete()
-        return redirect('/')
+        return redirect("/")
 
 
 class TaskUpdateView(BaseView):
     """View for updating a task"""
 
     def get(self, request, pk, **kwargs):
-        task_title = {'title': self.tasks.get(pk=pk).title}
+        task_title = {"title": self.tasks.get(pk=pk).title}
         update_form = UpdateTaskForm(initial=task_title)
-        context = {'form': update_form}
-        return render(request, template_name='update.html', context=context)
+        context = {"form": update_form}
+        return render(request, template_name="update.html", context=context)
 
     def post(self, request, pk, **kwargs):
         old_task = Todo.objects.get(pk=pk)
         form = UpdateTaskForm(request.POST, instance=old_task)
         if form.is_valid():
             form.save()
-        return redirect('/')
+        return redirect("/")
 
 
 class TaskStatusToggle(BaseView):
@@ -91,11 +97,7 @@ class TaskStatusToggle(BaseView):
             self.tasks.filter(pk=pk).update(completed=False)
         else:
             self.tasks.filter(pk=pk).update(completed=True)
-        return redirect('/')
-
-
-
-
+        return redirect("/")
 
 
 '''

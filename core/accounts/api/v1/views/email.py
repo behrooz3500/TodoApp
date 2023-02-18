@@ -15,16 +15,16 @@ class TestMailSender(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-
-        subject = 'Activation Data'
-        context = {'user': request.user.email}
-        html_message = render_to_string('email/test_email.html', context)
+        subject = "Activation Data"
+        context = {"user": request.user.email}
+        html_message = render_to_string("email/test_email.html", context)
         plain_message = strip_tags(html_message)
-        from_email = 'From <from@example.com>'
-        to = 'to@example.com'
+        from_email = "From <from@example.com>"
+        to = "to@example.com"
 
         email_sender_thread = EmailSenderThread(
-            subject, plain_message, from_email, [to], html_message)
+            subject, plain_message, from_email, [to], html_message
+        )
         email_sender_thread.start()
 
-        return Response({'details': 'email sent successfully'})
+        return Response({"details": "email sent successfully"})

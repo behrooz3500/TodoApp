@@ -1,16 +1,19 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin,
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
 )
 
 
 class UserManager(BaseUserManager):
     """Custom manager for the User model, creating users based on email"""
+
     def create_user(self, email, password, **extra_fields):
         """Create and save a user with given email and password"""
         if not email:
-            raise ValueError(_('Email is required!'))
+            raise ValueError(_("Email is required!"))
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,17 +22,17 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         """Create and save a superuser"""
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_verified", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('superuser must have is_staff=True'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('superuser must have is_superuser=True'))
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError(_("superuser must have is_staff=True"))
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError(_("superuser must have is_superuser=True"))
         return self.create_user(email, password, **extra_fields)
-        
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
@@ -40,7 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     objects = UserManager()
@@ -51,6 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     """Profile for saving additional info about each user"""
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=255, unique=True, null=True)
     first_name = models.CharField(max_length=255)
