@@ -11,3 +11,4 @@ django-filter
 drf-yasg
 black
 djangorestframework-simplejwt
+flake8
